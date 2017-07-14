@@ -44,7 +44,6 @@ Shader "Instanced/ProcShader00" {
 
 			v2f vert(uint vid : SV_VertexID, uint instanceID : SV_InstanceID)
 			{
-
 				// We just draw a bunch of vertices but want to pretend to
 				// be drawing two-triangle quads. Build inst/vert id for this:
 				int instID = vid / 120.0;
@@ -63,10 +62,12 @@ Shader "Instanced/ProcShader00" {
 				v_pos.x = -1.0 + 2.0*v_pos.x;
 
 				float ra = sin(1137.5*instID);
+
+				v_pos.y *= 1.0 + 0.1*ra;
+
 				v_pos.x *= 0.08 + sin(v_pos.y*10.0 + _Time.w*.2 + ra)*0.005 - pow(v_pos.y, 2.0)*0.05;
 				v_pos.x += 0.3*sin(_Time.w*0.1 + v_pos.y*ra*6.0 + ra*100.0 + cos(ra*123.4 + _Time.w*0.17))*(v_pos.y);
 				v_pos.y *= 2.2 + 0.5*ra;
-
 
 				// Read instance data
 				float4 pos = positionBuffer[instID].position;
@@ -105,9 +106,8 @@ Shader "Instanced/ProcShader00" {
 				float mask = clamp((6.0 - uv.y*6.0) - (uv.x*0.5 - 0.25)*(uv.x*0.5 - 0.25), 0.0, 1.0);
 				float ox = x;
 				x *= 1.2;
-				//x += 0.2*vcolb - 0.1;
 				x = clamp(x, 0.0, 1.0);
-				x = x * x;
+				x = pow(x,1.7);
 
 				float4 col = float4(
 					(1.0 - x)*(1.0 - x)*(1.0 - x)*0.8 + pow(x, 3.4),
@@ -119,7 +119,7 @@ Shader "Instanced/ProcShader00" {
 				col = col*smoothstep(0.1, 0.4, mask);
 				col.w = min(col.w, uv.y*10.0 - 0.1)*vcolb;
 				col.xyz *= 0.7 + 0.3*uv.y;
-				col.xyz = pow(col.xyz, 2.0);
+				col.xyz = pow(col.xyz, 2.2);
 				return col;
 			}
 

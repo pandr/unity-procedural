@@ -37,7 +37,8 @@ public class DrawProceduralDemo00 : MonoBehaviour
         }
 
         m_InstanceBuffer.SetData(m_DataBuffer, 0, 0, instanceCount);
-        transform.Rotate(Vector3.one, Time.deltaTime * 5.0f);
+        transform.Rotate(Vector3.one, Time.deltaTime * 3.0f);
+        transform.Rotate(Vector3.up, Time.deltaTime * 2.4f);
     }
 
     void OnRenderObject()
